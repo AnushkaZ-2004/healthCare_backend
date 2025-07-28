@@ -1,67 +1,27 @@
-package com.healthcare.model;
+package com.healthcare.dto;
 
 import com.healthcare.model.Role;
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "users")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserDto {
     private Long id;
 
 
-    @Column(unique = true)
     private String username;
 
-    @Column(unique = true)
     private String email;
-
 
     private String password;
 
-
     private String firstName;
-
 
     private String lastName;
 
     private String phoneNumber;
-
-    @Enumerated(EnumType.STRING)
     private Role role;
-
-    private Boolean active = true;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+    private Boolean active;
 
     // Constructors
-    public User() {}
-
-    public User(String username, String email, String password, String firstName, String lastName, Role role) {
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.role = role;
-    }
+    public UserDto() {}
 
     // Getters and Setters
     public Long getId() { return id; }
@@ -90,10 +50,4 @@ public class User {
 
     public Boolean getActive() { return active; }
     public void setActive(Boolean active) { this.active = active; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }

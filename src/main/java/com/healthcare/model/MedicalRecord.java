@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "appointments")
-public class Appointment {
+@Table(name = "medical_records")
+public class MedicalRecord {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,11 +18,17 @@ public class Appointment {
     @JoinColumn(name = "doctor_id", referencedColumnName = "id")
     private Doctor doctor;
 
-    private LocalDateTime appointmentDateTime;
-    private String reason;
-    private String status; // SCHEDULED, COMPLETED, CANCELLED
-    private String notes;
+    @OneToOne
+    @JoinColumn(name = "appointment_id", referencedColumnName = "id")
+    private Appointment appointment;
+
+    private String diagnosis;
+    private String symptoms;
+    private String treatment;
     private String prescription;
+    private String testResults;
+    private String notes;
+    private LocalDateTime visitDate;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -30,8 +36,8 @@ public class Appointment {
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
-        if (status == null) {
-            status = "SCHEDULED";
+        if (visitDate == null) {
+            visitDate = LocalDateTime.now();
         }
     }
 
@@ -41,14 +47,13 @@ public class Appointment {
     }
 
     // Constructors
-    public Appointment() {}
+    public MedicalRecord() {}
 
-    public Appointment(Patient patient, Doctor doctor, LocalDateTime appointmentDateTime, String reason) {
+    public MedicalRecord(Patient patient, Doctor doctor, Appointment appointment) {
         this.patient = patient;
         this.doctor = doctor;
-        this.appointmentDateTime = appointmentDateTime;
-        this.reason = reason;
-        this.status = "SCHEDULED";
+        this.appointment = appointment;
+        this.visitDate = LocalDateTime.now();
     }
 
     // Getters and Setters
@@ -61,20 +66,29 @@ public class Appointment {
     public Doctor getDoctor() { return doctor; }
     public void setDoctor(Doctor doctor) { this.doctor = doctor; }
 
-    public LocalDateTime getAppointmentDateTime() { return appointmentDateTime; }
-    public void setAppointmentDateTime(LocalDateTime appointmentDateTime) { this.appointmentDateTime = appointmentDateTime; }
+    public Appointment getAppointment() { return appointment; }
+    public void setAppointment(Appointment appointment) { this.appointment = appointment; }
 
-    public String getReason() { return reason; }
-    public void setReason(String reason) { this.reason = reason; }
+    public String getDiagnosis() { return diagnosis; }
+    public void setDiagnosis(String diagnosis) { this.diagnosis = diagnosis; }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public String getSymptoms() { return symptoms; }
+    public void setSymptoms(String symptoms) { this.symptoms = symptoms; }
+
+    public String getTreatment() { return treatment; }
+    public void setTreatment(String treatment) { this.treatment = treatment; }
+
+    public String getPrescription() { return prescription; }
+    public void setPrescription(String prescription) { this.prescription = prescription; }
+
+    public String getTestResults() { return testResults; }
+    public void setTestResults(String testResults) { this.testResults = testResults; }
 
     public String getNotes() { return notes; }
     public void setNotes(String notes) { this.notes = notes; }
 
-    public String getPrescription() { return prescription; }
-    public void setPrescription(String prescription) { this.prescription = prescription; }
+    public LocalDateTime getVisitDate() { return visitDate; }
+    public void setVisitDate(LocalDateTime visitDate) { this.visitDate = visitDate; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
